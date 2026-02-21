@@ -1,0 +1,28 @@
+function:
+  name: EmailAlUsuarioFn
+  runtime: python3.12
+  handler: handler.lambda_handler
+  description: |
+    Envía un correo electrónico al usuario asociado a la sesión de orquestación.
+    Valida los parámetros del correo (cuerpo, razonamiento, adjuntos) y reenvía
+    el evento email_to_user al orquestador para que se ejecute el envío real.
+    NO usa LLM — es un validador y enrutador de eventos.
+  timeout: 120
+  memory_size: 512
+  layers:
+    - foundationMinimal
+    - foundationApi
+  parameters:
+    required:
+      - name: reasoning
+        type: string
+        description: "Explicación del razonamiento detrás del envío del correo"
+      - name: body
+        type: string
+        description: "Contenido del correo en formato HTML (no Markdown)"
+    optional:
+      - name: attachments
+        type: array
+        description: "Lista de adjuntos, cada uno con uuid y source"
+  widget:
+    enabled: false

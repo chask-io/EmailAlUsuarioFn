@@ -1,0 +1,16 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "args": {
+    "reasoning": "El usuario solicitó información sobre el estado de su cuenta y los movimientos recientes.",
+    "body": "<p>Estimado usuario,</p><p>Adjunto encontrará el detalle de los movimientos recientes de su cuenta.</p><p>Saludos cordiales,<br>Equipo de Soporte</p>"
+  },
+  "widget_params": {},
+  "prompt": "",
+  "event_type": "function_call",
+  "extra_params": {},
+  "files": [],
+  "metadata": {
+    "description": "Basic test: send email to user with reasoning and body, no attachments",
+    "expected_status": "success"
+  }
+}

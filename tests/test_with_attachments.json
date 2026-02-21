@@ -1,0 +1,26 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "args": {
+    "reasoning": "El usuario pidió el documento de contrato firmado junto con el comprobante de pago.",
+    "body": "<p>Estimado usuario,</p><p>Adjunto encontrará los documentos solicitados:</p><ul><li>Contrato firmado</li><li>Comprobante de pago</li></ul><p>Saludos,<br>Equipo de Soporte</p>",
+    "attachments": [
+      {
+        "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "source": "uploads"
+      },
+      {
+        "file_uuid": "f9e8d7c6-b5a4-3210-fedc-ba0987654321",
+        "origin": "documents"
+      }
+    ]
+  },
+  "widget_params": {},
+  "prompt": "",
+  "event_type": "function_call",
+  "extra_params": {},
+  "files": [],
+  "metadata": {
+    "description": "Test with attachments using both uuid/file_uuid and source/origin variants",
+    "expected_status": "success"
+  }
+}
