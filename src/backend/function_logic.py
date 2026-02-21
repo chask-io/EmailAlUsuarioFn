@@ -188,6 +188,13 @@ class FunctionBackend:
         """
         oe = self.orchestration_event
 
+        # Extract tool_call_id for response matching in EmailToUserHandler
+        tool_call_id = None
+        original_extra = oe.extra_params or {}
+        tool_calls = original_extra.get("tool_calls", [])
+        if tool_calls:
+            tool_call_id = tool_calls[0].get("id")
+
         extra_params = {
             "body": body,
             "thread_idx": thread_idx,
@@ -196,6 +203,7 @@ class FunctionBackend:
             "attachments": attachments,
             "sender_email": "orchestrator",
             "to": selected_thread.get("customer_email", ""),
+            "tool_call_id": tool_call_id,
         }
 
         logger.info("Evolving event to email_to_user")
