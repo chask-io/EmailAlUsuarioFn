@@ -28,6 +28,8 @@ class FunctionBackend:
     NO usa LLM — es un validador/enrutador simple.
     """
 
+    VALID_ATTACHMENT_SOURCES = {"email", "whatsapp", "file", "upload", "excel_analyst"}
+
     def __init__(self, orchestration_event: OrchestrationEvent):
         self.orchestration_event = orchestration_event
         logger.info(
@@ -117,12 +119,15 @@ class FunctionBackend:
         tool_call = tool_calls[0]
         return tool_call.get("args", {})
 
+    VALID_ATTACHMENT_SOURCES = {"email", "whatsapp", "file", "upload", "excel_analyst"}
+
     def _process_attachments(self, attachments: List) -> List[Dict[str, str]]:
         """
         Validate and normalize attachment objects.
 
         Normalizes uuid/file_uuid and source/origin field variants
-        into a consistent {uuid, source} format.
+        into a consistent {uuid, source} format. If the source is not
+        a valid type (e.g. the LLM passed a URL), defaults to "upload".
 
         Args:
             attachments: Raw attachment list from tool call args
@@ -146,19 +151,27 @@ class FunctionBackend:
             uuid_value = attachment.get("uuid") or attachment.get("file_uuid")
             source_value = attachment.get("source") or attachment.get("origin")
 
-            if uuid_value:
-                processed.append({
-                    "uuid": uuid_value,
-                    "source": source_value or "unknown",
-                })
-                logger.info(
-                    f"Processed attachment {i + 1}: uuid={uuid_value}, "
-                    f"source={source_value or 'unknown'}"
-                )
-            else:
+            if not uuid_value:
                 errors.append(
                     f"Adjunto {i + 1} no tiene UUID válido (falta 'uuid' o 'file_uuid')"
                 )
+                continue
+
+            if source_value not in self.VALID_ATTACHMENT_SOURCES:
+                logger.warning(
+                    f"Attachment {i + 1} has invalid source '{source_value}', "
+                    f"defaulting to 'upload'"
+                )
+                source_value = "upload"
+
+            processed.append({
+                "uuid": uuid_value,
+                "source": source_value,
+            })
+            logger.info(
+                f"Processed attachment {i + 1}: uuid={uuid_value}, "
+                f"source={source_value}"
+            )
 
         if errors:
             raise ValueError(f"Error procesando adjuntos: {'; '.join(errors)}")
@@ -229,7 +242,7 @@ class FunctionBackend:
         if not evolved_uuid:
             raise RuntimeError("API response missing uuid for evolved email_to_user event")
 
-        email_event = oe.model_copy(deep=True)
+        email_event = oe.model_copy()
         email_event.event_id = evolved_uuid
         email_event.event_type = "email_to_user"
         email_event.source = "agent_EmailToUser"
