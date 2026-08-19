@@ -1,0 +1,8 @@
+{
+	"function_uuid": "a377e12b-02a9-4022-bf40-181e7afe0dfa",
+	"organization_id": "706a70db-fb7f-4579-898f-b1f0ff4a2b5a",
+	"last_published_at": "2026-05-02T04:27:09.430Z",
+	"function_arn": "EmailAlUsuarioFn-bf40181e7afe0dfa",
+	"function_name": "EmailAlUsuarioFn",
+	"git_ref": "main"
+}
