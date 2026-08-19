@@ -1,0 +1,16 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "test_type": "operator_params",
+  "args": {},
+  "widget_params": {},
+  "prompt": "<describe what the user wants EmailAlUsuarioFn to do>",
+  "event_type": "function_call",
+  "extra_params": {
+    "is_operator_params_test": true
+  },
+  "files": [],
+  "metadata": {
+    "description": "Test operator generating params for EmailAlUsuarioFn",
+    "expected_status": "success"
+  }
+}

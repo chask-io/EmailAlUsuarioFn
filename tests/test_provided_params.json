@@ -1,0 +1,17 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "test_type": "provided_params",
+  "args": {
+    "reasoning": "<reasoning_value — Explicación del razonamiento detrás del envío del correo>",
+    "body": "<body_value — Contenido del correo en formato HTML (no Markdown)>"
+  },
+  "widget_params": {},
+  "prompt": "",
+  "event_type": "function_call",
+  "extra_params": {},
+  "files": [],
+  "metadata": {
+    "description": "Test EmailAlUsuarioFn with explicit params",
+    "expected_status": "success"
+  }
+}
