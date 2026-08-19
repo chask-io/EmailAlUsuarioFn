@@ -230,6 +230,7 @@ class FunctionBackend:
             raise RuntimeError("API response missing uuid for evolved email_to_user event")
 
         email_event = oe.model_copy(deep=True)
+        email_event.channel_id = selected_thread["uuid"]
         email_event.event_id = evolved_uuid
         email_event.event_type = "email_to_user"
         email_event.source = "agent_EmailToUser"
