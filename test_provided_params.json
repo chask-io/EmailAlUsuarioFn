@@ -1,0 +1,9 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "test_type": "provided_params",
+  "args": {
+    "reasoning": "El usuario solicitó información sobre el estado de su pedido reciente.",
+    "body": "<p>Estimado usuario,</p><p>Le informamos que su pedido está en proceso.</p><p>Saludos,<br>Equipo de Soporte</p>"
+  },
+  "prompt": "Test EmailAlUsuarioFn with provided params"
+}

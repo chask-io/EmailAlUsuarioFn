@@ -1,0 +1,6 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "test_type": "operator_params",
+  "args": {},
+  "prompt": "Test EmailAlUsuarioFn with operator-generated params"
+}
