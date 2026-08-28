@@ -16,6 +16,43 @@ from api.orchestrator_requests import orchestrator_api_manager
 
 logger = logging.getLogger(__name__)
 
+# chask_api rejects any attachment whose "source" falls outside this set with a
+# 400 before the email is ever built.
+VALID_ATTACHMENT_SOURCES = {"email", "whatsapp", "file", "upload", "excel_analyst"}
+
+# The agent writes the "source" string itself, so it invents plausible values
+# ("session", "uploads", "documents") that the API has never accepted. Map the
+# ones we have actually seen; anything else falls back to "upload", the File
+# lookup that covers session files.
+ATTACHMENT_SOURCE_ALIASES = {
+    "session": "upload",
+    "sesion": "upload",
+    "uploads": "upload",
+    "uploaded": "upload",
+    "user_upload": "upload",
+    "documents": "file",
+    "document": "file",
+    "files": "file",
+    "attachment": "email",
+    "attachments": "email",
+    "email_attachment": "email",
+    "correo": "email",
+    "whatsapp_attachment": "whatsapp",
+    "excel": "excel_analyst",
+    "analyst": "excel_analyst",
+    "excel_analyst_file": "excel_analyst",
+}
+
+DEFAULT_ATTACHMENT_SOURCE = "upload"
+
+
+def normalize_attachment_source(raw_source: Any) -> str:
+    """Coerce an agent-written source into one chask_api will accept."""
+    candidate = str(raw_source or "").strip().lower()
+    if candidate in VALID_ATTACHMENT_SOURCES:
+        return candidate
+    return ATTACHMENT_SOURCE_ALIASES.get(candidate, DEFAULT_ATTACHMENT_SOURCE)
+
 
 class FunctionBackend:
     """
@@ -121,8 +158,10 @@ class FunctionBackend:
         """
         Validate and normalize attachment objects.
 
-        Normalizes uuid/file_uuid and source/origin field variants
-        into a consistent {uuid, source} format.
+        Normalizes uuid/file_uuid and source/origin field variants into a
+        consistent {uuid, source} format, and coerces the source value itself
+        into one of chask_api's VALID_ATTACHMENT_SOURCES so the send is not
+        rejected with a 400.
 
         Args:
             attachments: Raw attachment list from tool call args
@@ -147,13 +186,19 @@ class FunctionBackend:
             source_value = attachment.get("source") or attachment.get("origin")
 
             if uuid_value:
+                normalized_source = normalize_attachment_source(source_value)
+                if source_value and normalized_source != source_value:
+                    logger.warning(
+                        f"Adjunto {i + 1}: source='{source_value}' no es válido para "
+                        f"chask_api, se envía como '{normalized_source}'"
+                    )
                 processed.append({
                     "uuid": uuid_value,
-                    "source": source_value or "unknown",
+                    "source": normalized_source,
                 })
                 logger.info(
                     f"Processed attachment {i + 1}: uuid={uuid_value}, "
-                    f"source={source_value or 'unknown'}"
+                    f"source={normalized_source}"
                 )
             else:
                 errors.append(

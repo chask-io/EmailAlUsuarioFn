@@ -11,6 +11,10 @@
       {
         "file_uuid": "f9e8d7c6-b5a4-3210-fedc-ba0987654321",
         "origin": "documents"
+      },
+      {
+        "uuid": "a031ec47-0000-4000-8000-000000000000",
+        "source": "session"
       }
     ]
   },
@@ -20,7 +24,7 @@
   "extra_params": {},
   "files": [],
   "metadata": {
-    "description": "Test with attachments using both uuid/file_uuid and source/origin variants",
+    "description": "Adjuntos con variantes uuid/file_uuid y source/origin, y con sources que el agente inventa ('uploads', 'documents', 'session'): todos deben salir normalizados a un valor que chask_api acepte.",
     "expected_status": "success"
   }
 }
