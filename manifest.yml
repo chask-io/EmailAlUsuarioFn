@@ -23,6 +23,11 @@ function:
     optional:
       - name: attachments
         type: array
-        description: "Lista de adjuntos, cada uno con uuid y source"
+        description: >-
+          Lista de adjuntos. Cada elemento es {"uuid": "<uuid-del-archivo>",
+          "source": "<tipo>"}. "source" debe ser exactamente uno de:
+          email, whatsapp, file, upload, excel_analyst. NO es una URL ni una
+          ruta. Si el archivo viene de la sesión o no sabes su tipo, usa
+          "upload".
   widget:
     enabled: false
