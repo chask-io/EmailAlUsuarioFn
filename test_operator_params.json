@@ -1,6 +1,8 @@
 {
   "function_name": "EmailAlUsuarioFn",
   "test_type": "operator_params",
-  "args": {},
-  "prompt": "Test EmailAlUsuarioFn with operator-generated params"
+  "args": {
+    "body": "<p>Hola:</p><p>Para emitir tu etiqueta de envío necesitamos confirmar tu teléfono, tu dirección con calle y número, y tu comuna.</p><p>Saludos,<br>Stanley Chile</p>"
+  },
+  "prompt": "Envíale un correo al usuario pidiéndole su teléfono, su dirección con calle y número, y su comuna para emitir la etiqueta. Sin explicar el motivo: reasoning es opcional."
 }
