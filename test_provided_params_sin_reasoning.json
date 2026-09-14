@@ -1,0 +1,8 @@
+{
+  "function_name": "EmailAlUsuarioFn",
+  "test_type": "provided_params",
+  "args": {
+    "body": "<p>Hola:</p><p>Para emitir tu etiqueta de envío necesitamos confirmar tu teléfono, tu dirección con calle y número, y tu comuna.</p><p>Saludos,<br>Stanley Chile</p>"
+  },
+  "prompt": "El llamador omite reasoning: el correo igual debe salir, porque reasoning sólo anota la traza y no llega al cliente."
+}

@@ -58,7 +58,7 @@ class FunctionBackend:
     """
     Backend para EmailAlUsuarioFn.
 
-    Valida parámetros de correo electrónico (reasoning, body, attachments),
+    Valida parámetros de correo electrónico (body, y opcionalmente reasoning y attachments),
     obtiene los hilos de email asociados a la sesión, normaliza adjuntos,
     y emite un evento email_to_user al orquestador.
 
@@ -77,7 +77,7 @@ class FunctionBackend:
         Procesa la solicitud de envío de correo electrónico.
 
         Flujo:
-        1. Extrae parámetros del tool call (reasoning, body, attachments)
+        1. Extrae parámetros del tool call (body, y opcionalmente reasoning y attachments)
         2. Obtiene hilos de email de la sesión
         3. Valida y normaliza adjuntos
         4. Emite evento email_to_user al orquestador
@@ -96,8 +96,13 @@ class FunctionBackend:
         body = tool_args.get("body")
         attachments = tool_args.get("attachments", [])
 
+        # `reasoning` sólo viaja como `prompt` del evento, o sea es una anotación
+        # para la traza: no llega al cliente, que lee `body`. Exigirlo costaba
+        # correos reales — cuando el operador lo omitía, el validador descartaba
+        # la llamada, la solicitud de datos quedaba abierta y el cliente nunca
+        # se enteraba de que le estaban preguntando algo.
         if not reasoning:
-            raise ValueError("Falta el parámetro requerido: reasoning")
+            reasoning = "Correo al usuario (el llamador no explicó el motivo)."
         if not body:
             raise ValueError("Falta el parámetro requerido: body")
 

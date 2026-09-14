@@ -14,13 +14,15 @@ function:
     - foundationApi
   parameters:
     required:
-      - name: reasoning
-        type: string
-        description: "Explicación del razonamiento detrás del envío del correo"
       - name: body
         type: string
         description: "Contenido del correo en formato HTML (no Markdown)"
     optional:
+      - name: reasoning
+        type: string
+        description: >-
+          Por qué se envía este correo. Es una anotación para la traza de la
+          sesión, no llega al cliente: lo que el cliente lee es `body`.
       - name: attachments
         type: array
         description: >-
