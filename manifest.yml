@@ -29,7 +29,10 @@ function:
           Lista de adjuntos. Cada elemento es {"uuid": "<uuid-del-archivo>",
           "source": "<tipo>"}. "source" debe ser exactamente uno de:
           email, whatsapp, file, upload, excel_analyst. NO es una URL ni una
-          ruta. Si el archivo viene de la sesión o no sabes su tipo, usa
-          "upload".
+          ruta. Un archivo que el usuario mandó por correo es "email"; por
+          WhatsApp, "whatsapp". "upload" es sólo para archivos subidos a la
+          plataforma. Si el envío falla, eso no significa que los archivos del
+          usuario estén mal: nunca le pidas que reenvíe archivos que ya están
+          en la sesión.
   widget:
     enabled: false
